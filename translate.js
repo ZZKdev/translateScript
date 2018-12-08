@@ -15,9 +15,58 @@
     'use strict';
 
     var youdaoUrl = 'http://dict.youdao.com/jsonapi?xmlVersion=5.1&jsonversion=2&q=';
-    var googleUrl = 'https://translate.google.cn/translate_a/single?client=gtx&dt=t&dt=bd&dj=1&source=input&hl=zh-CN&sl=auto&tl=';
+    var googleUrlCN = 'https://translate.google.cn/translate_a/single?client=webapp&sl=auto&tl=zh-CN&hl=zh-CN&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&source=bh&ssel=0&tsel=0&kc=0&tk=';
+    var googleUrlen = 'https://translate.google.cn/translate_a/single?client=webapp&sl=auto&tl=en&hl=zh-CN&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&source=bh&ssel=0&tsel=0&kc=0&tk='
+    /*--------google翻译接口求tk模块----使用vq函数获得tk模块----------*/
+    function vq(a,uq='422388.3876711001') {
+        if (null !== uq)
+            var b = uq;
+        else {
+            b = sq('T');
+            var c = sq('K');
+            b = [b(), c()];
+            b = (uq = window[b.join(c())] || "") || "";
+        }
+        var d = sq('t');
+        c = sq('k');
+        d = [d(), c()];
+        c = "&" + d.join("") + "=";
+        d = b.split(".");
+        b = Number(d[0]) || 0;
+        for (var e = [], f = 0, g = 0; g < a.length; g++) {
+            var l = a.charCodeAt(g);
+            128 > l ? e[f++] = l : (2048 > l ? e[f++] = l >> 6 | 192 : (55296 == (l & 64512) && g + 1 < a.length && 56320 == (a.charCodeAt(g + 1) & 64512) ? (l = 65536 + ((l & 1023) << 10) + (a.charCodeAt(++g) & 1023),
+        e[f++] = l >> 18 | 240,
+        e[f++] = l >> 12 & 63 | 128) : e[f++] = l >> 12 | 224,
+                                                                        e[f++] = l >> 6 & 63 | 128),
+                                    e[f++] = l & 63 | 128)
+        }
+        a = b;
+        for (f = 0; f < e.length; f++)
+            a += e[f],
+                a = tq(a, "+-a^+6");
+        a = tq(a, "+-3^+b+-f");
+        a ^= Number(d[1]) || 0;
+        0 > a && (a = (a & 2147483647) + 2147483648);
+        a %= 1000000;
+        return c + (a.toString() + "." + (a ^ b));
+    };
+    function sq(a) {
+        return function() {
+            return a
+        }
+    };
 
-
+    function tq(a, b) {
+        for (var c = 0; c < b.length - 2; c += 3) {
+            var d = b.charAt(c + 2);
+            d = "a" <= d ? d.charCodeAt(0) - 87 : Number(d);
+            d = "+" == b.charAt(c + 1) ? a >>> d : a << d;
+            a = "+" == b.charAt(c) ? a + d & 4294967295 : a ^ d
+        }
+        return a
+    };
+/*---------------------------------------------------求tk模块end--------------*/
     document.onmouseup = function(e){
         var text = window.getSelection().toString();
         if(text){
@@ -32,12 +81,12 @@
             server.rendered.push(container);
 
             if(isChina(text)) {
-                ajax(googleUrl + 'en&q=', encodeURIComponent(text), 1, container);
+                ajax(googleUrlen + vq(text) + "&q=", encodeURIComponent(text), 1, container);
             }else {
                 if(countOfWord(text) == 1) {
                     ajax(youdaoUrl, text, 0, container);
                 }else {
-                    ajax(googleUrl + 'zh-CN&q=', encodeURIComponent(text), 1, container);
+                    ajax(googleUrlCN + vq(text) + "&q=", encodeURIComponent(text), 1, container);
                 }
             }
         }
@@ -133,9 +182,10 @@
 
     // 谷歌翻译 引擎
     function google(rst, element) {
-        var json = JSON.parse(rst), html = '';
-        for (var i = 0; i < json.sentences.length; i++) {
-            html += json.sentences[i].trans;
+        console.log(rst);
+        var json = JSON.parse(rst)[0], html = '';
+        for (var i = 0; i < json.length - 1; i++) {
+            html += json[i][0];
         }
         html = html.replace(/\n/gi, "<br/>");
         displaycontainer(html, element);
