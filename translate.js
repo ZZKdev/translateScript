@@ -167,11 +167,11 @@
                 'position:absolute!important;' +
                 'font-size:15px!important;' +
                 'overflow:auto!important;' +
-                'background:#fff!important;' +
+                'background:#000!important;' +
                 'font-family:sans-serif,Arial!important;' +
                 'font-weight:normal!important;' +
                 'text-align:left!important;' +
-                'color:#000!important;' +
+                'color:#fff!important;' +
                 'padding:0.5em 1em!important;' +
                 'line-height:1.5em!important;' +
                 'border-radius:5px!important;' +
@@ -180,6 +180,7 @@
                 'max-width:350px!important;' +
                 'max-height:216px!important;' +
                 'z-index:2147483647!important;' +
+                'opacity:0.65; ' +
                 '');
             return div;
         }
