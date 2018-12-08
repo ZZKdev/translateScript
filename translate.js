@@ -174,13 +174,13 @@
                 'color:#fff!important;' +
                 'padding:0.5em 1em!important;' +
                 'line-height:1.5em!important;' +
-                'border-radius:5px!important;' +
-                'border:1px solid #ccc!important;' +
+                'border-radius:6px!important;' +
+                'border:5px double #ccc!important;' +
                 'box-shadow:4px 4px 8px #888!important;' +
                 'max-width:350px!important;' +
                 'max-height:216px!important;' +
                 'z-index:2147483647!important;' +
-                'opacity:0.65; ' +
+                'opacity:0.8; ' +
                 '');
             return div;
         }
