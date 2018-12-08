@@ -138,7 +138,6 @@
             html += json.sentences[i].trans;
         }
         html = html.replace(/\n/gi, "<br/>");
-        console.log(html);
         displaycontainer(html, element);
     }
 
